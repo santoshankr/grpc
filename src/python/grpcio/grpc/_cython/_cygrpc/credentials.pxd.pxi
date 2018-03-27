@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 cdef class CallCredentials:
 
   cdef grpc_call_credentials *c(self)
@@ -55,6 +54,11 @@ cdef class ChannelCredentials:
 
   # TODO(https://github.com/grpc/grpc/issues/12531): remove.
   cdef grpc_channel_credentials *c_credentials
+
+
+cdef class SSLSessionCache:
+
+  cdef grpc_ssl_session_cache *_cache
 
 
 cdef class SSLChannelCredentials(ChannelCredentials):

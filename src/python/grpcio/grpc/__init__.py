@@ -1360,6 +1360,15 @@ def method_handlers_generic_handler(service, method_handlers):
     return _utilities.DictionaryGenericHandler(service, method_handlers)
 
 
+def ssl_session_cache(capacity):
+    """Creates an SSLSessionCache for use with an SSL-enabled Channel
+
+    Args:
+      capacity: The size of the cache
+    """
+    return _cygrpc.SSLSessionCache(capacity)
+
+
 def ssl_channel_credentials(root_certificates=None,
                             private_key=None,
                             certificate_chain=None):
@@ -1686,6 +1695,7 @@ __all__ = (
     'stream_stream_rpc_method_handler',
     'method_handlers_generic_handler',
     'ssl_channel_credentials',
+    'ssl_session_cache',
     'metadata_call_credentials',
     'access_token_call_credentials',
     'composite_call_credentials',

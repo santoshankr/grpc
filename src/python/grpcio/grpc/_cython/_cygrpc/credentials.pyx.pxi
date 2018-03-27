@@ -17,6 +17,8 @@ cimport cpython
 import grpc
 import threading
 
+from libc.stdint cimport uintptr_t
+
 
 cdef class CallCredentials:
 
@@ -94,6 +96,20 @@ cdef class ChannelCredentials:
 
   cdef grpc_channel_credentials *c(self):
     raise NotImplementedError()
+
+
+cdef class SSLSessionCache:
+
+  def __cinit__(self, capacity):
+    grpc_init()
+    self._cache = grpc_ssl_session_cache_create_lru(capacity)
+
+  def __int__(self):
+    return <uintptr_t>self._cache
+
+  def __dealloc__(self):
+    grpc_ssl_session_cache_destroy(self._cache)
+    grpc_shutdown()
 
 
 cdef class SSLChannelCredentials(ChannelCredentials):

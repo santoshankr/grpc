@@ -70,6 +70,7 @@ class AllTest(unittest.TestCase):
             'composite_channel_credentials',
             'ssl_server_credentials',
             'ssl_server_certificate_configuration',
+            'ssl_session_cache',
             'dynamic_ssl_server_credentials',
             'channel_ready_future',
             'insecure_channel',
