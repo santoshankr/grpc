@@ -22,7 +22,20 @@ import helloworld_pb2_grpc
 
 
 def run():
-    channel = grpc.insecure_channel('localhost:50051')
+    creds = grpc.ssl_channel_credentials(root_certificates=open("certs/CAcert.pem").read(),
+                                         private_key=open("certs/client.pem").read(),
+                                         certificate_chain=open("certs/client.crt").read())
+
+    session_cache = grpc.ssl_session_cache(1024)
+    options = [('grpc.ssl_target_name_override', 'server'),
+               ('grpc.ssl_session_cache', session_cache)]
+
+    channel = grpc.secure_channel('localhost:50051', creds, options=options)
+    stub = helloworld_pb2_grpc.GreeterStub(channel)
+    response = stub.SayHello(helloworld_pb2.HelloRequest(name='you'))
+    print("Greeter client received: " + response.message)
+
+    channel = grpc.secure_channel('localhost:50051', creds, options=options)
     stub = helloworld_pb2_grpc.GreeterStub(channel)
     response = stub.SayHello(helloworld_pb2.HelloRequest(name='you'))
     print("Greeter client received: " + response.message)
